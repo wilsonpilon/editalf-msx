@@ -1,8 +1,8 @@
 include msx.asm
 cseg
-public PRINT
+public Print
 extrn BIOS
-PRINT:
+Print:
     ld a,(hl)
     or a
     ret z
@@ -11,7 +11,6 @@ PRINT:
     call BIOS
     pop hl
     inc hl
-    jp PRINT
-
+    jp Print
 dseg
 end

@@ -1,64 +1,30 @@
-include msx.asm
-cseg
-extrn PRINT
-extrn BIOS
-PROGRAM:
-    call SAVE_COLOR
-    ld d,71h
-    call CHANGE_COLOR
-    ld ix,POSIT
-    ld h,10
-    ld l,20
+;-- MENU -------------------------------
+; Menu MSX, no modo MIX SCREEN 1 e 2
+; Autor: Wilson "Barney" Pilon
+;        Abril, 2023
+; Formato N80/LK80
+;---------------------------------------
+
+include msx.asm         ;Sistema MSX
+
+cseg                    ;Codigo
+extrn Print             ;Impressao de zString via BIOS
+extrn ScreenIV          ;Inicializa o modo de tela
+extrn BIOS              ;Chamada da BIOS via MSX-DOS
+
+;-- Laco Principal ---------------------
+Menu:
+    call ScreenIV
+    ld h,1
+    ld l,2
+    ld ix,Posit
     call BIOS
-    ld hl,HELLO
-    call PRINT
+    ld hl,Hello
+    call Print
     ld ix,KILBUF
     call BIOS
-    ld ix,CHGET
-    call BIOS
-    call LOAD_COLOR
-    call CHANGE_COLOR
     ret
+dseg                    ;Dados
+    Hello:      db 10,"Hello!\0"
 
-SAVE_COLOR:
-    ld a,(FORCLR)
-    ld (FOREGROUND),a
-    ld a,(BAKCLR)
-    ld (BACKGROUND),a
-    ret
-
-LOAD_COLOR:
-    ld a,(FOREGROUND)
-    ld (FORCLR),a
-    sla a
-    sla a
-    sla a
-    sla a
-    ld d,a
-    ld a,(BACKGROUND)
-    ld (BAKCLR),a
-    and 0F0h
-    or d
-    ret
-
-CHANGE_COLOR:
-    ld a,d
-    and 0F0h
-    sra a
-    sra a
-    sra a
-    sra a
-    ld (FORCLR),a
-    ld a,d
-    and 00Fh
-    ld (BAKCLR),a
-    ld ix,INITXT
-    call BIOS
-    ret
-
-
-dseg
-HELLO:      db "Hello!\0"
-FOREGROUND: db 0
-BACKGROUND: db 0
 end

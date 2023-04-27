@@ -1,12 +1,12 @@
-TARGET = msxdos
+TARGET = menu
 M80 = N80
 L80 = LK80
 LIB80 = LB80
 LFLAGS = --code 0100h --data 0200h
 
 INC = msx.asm
-SRC = main.asm print.asm bios.asm
-OBJ = $(SRC:.asm=.rel)
+SOURCES = main.asm video.asm bios.asm screen.asm
+OBJ = $(SOURCES:.asm=.rel)
 
 .PHONY: clean
 
